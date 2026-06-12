@@ -1,13 +1,48 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+public class Main {
+
+    static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            AppWindow window = new AppWindow();
+            window.setVisible(true);
+        });
+    }
+}
+
+class AppWindow extends JFrame {
+
+    public AppWindow() {
+        setTitle("Projekt Java - Interfejs GUI");
+
+        // rozmiar okna
+        setSize(900, 600);
+
+        // ustawienie okna na środku ekranu
+        setLocationRelativeTo(null);
+
+        // user obsluguje zamykanie okna
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // zdarzenie zamkniecia okna
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(
+                        AppWindow.this,
+                        "Czy na pewno chcesz zamknąć aplikację?",
+                        "Zamykanie aplikacji",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    dispose();
+                    System.exit(0);
+                }
+            }
+        });
     }
 }
