@@ -11,9 +11,16 @@ public class Menu extends JMenuBar {
         JMenu helpMenu = new JMenu("Pomoc");
 
         JMenuItem exitItem = new JMenuItem("Zamknij");
+        JMenuItem helpItem = new JMenuItem("Instrukcja");
         JMenuItem authorItem = new JMenuItem("Autor");
 
         exitItem.addActionListener(e -> window.closeApplication());
+
+        helpItem.addActionListener(e -> {
+            status.setMessage("Wyświetlono pomoc");
+            HelpDialog dialog = new HelpDialog(window);
+            dialog.setVisible(true);
+        });
 
         authorItem.addActionListener(e -> {
             status.setMessage("Wyświetlono informacje o autorze");
@@ -22,6 +29,8 @@ public class Menu extends JMenuBar {
         });
 
         fileMenu.add(exitItem);
+
+        helpMenu.add(helpItem);
         helpMenu.add(authorItem);
 
         add(fileMenu);
