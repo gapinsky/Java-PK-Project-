@@ -1,19 +1,30 @@
 package app.ui;
 
-public class Menu {
-    public void show() {
-        System.out.println("=== MENU ===");
-        System.out.println("1. Status");
-        System.out.println("2. Narzędzia");
-        System.out.println("3. Autor");
-        System.out.println("0. Wyjście");
-    }
+import app.Window;
 
-    public void showInvalidOption() {
-        System.out.println("Nieprawidłowa opcja. Spróbuj ponownie.");
-    }
+import javax.swing.*;
 
-    public void showExitMessage() {
-        System.out.println("Zamykanie aplikacji...");
+public class Menu extends JMenuBar {
+
+    public Menu(Window window, Status status) {
+        JMenu fileMenu = new JMenu("Plik");
+        JMenu helpMenu = new JMenu("Pomoc");
+
+        JMenuItem exitItem = new JMenuItem("Zamknij");
+        JMenuItem authorItem = new JMenuItem("Autor");
+
+        exitItem.addActionListener(e -> window.closeApplication());
+
+        authorItem.addActionListener(e -> {
+            status.setMessage("Wyświetlono informacje o autorze");
+            AuthorDialog dialog = new AuthorDialog(window);
+            dialog.setVisible(true);
+        });
+
+        fileMenu.add(exitItem);
+        helpMenu.add(authorItem);
+
+        add(fileMenu);
+        add(helpMenu);
     }
 }
