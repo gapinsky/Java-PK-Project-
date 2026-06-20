@@ -6,8 +6,30 @@ import com.l2fprod.common.swing.tips.DefaultTipModel;
 
 import javax.swing.*;
 
+/**
+ * Klasa pomocnicza odpowiedzialna za wyświetlanie okna Tip of the Day.
+ * <p>
+ * Okno z poradą dnia uruchamiane jest przy starcie aplikacji i zawiera
+ * kilka wskazówek dotyczących obsługi programu.
+ * </p>
+ *
+ * @author Antoni Gapiński
+ * @version 3.0
+ * @since 2026-06-20
+ */
 public class TipOfTheDayService {
 
+    /**
+     * Prywatny konstruktor blokujący tworzenie obiektów klasy pomocniczej.
+     */
+    private TipOfTheDayService() {
+    }
+
+    /**
+     * Wyświetla okno z poradą dnia.
+     *
+     * @param owner okno nadrzędne, względem którego wyświetlana jest porada
+     */
     public static void showTip(JFrame owner) {
         DefaultTipModel tipModel = new DefaultTipModel();
 

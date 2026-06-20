@@ -21,3 +21,12 @@ INFO  | 2026-06-20 05:25:23 | app.ui.MainPanel | saveTableToFile | linia:344 | Z
 INFO  | 2026-06-20 05:25:26 | app.ui.MainPanel | exportTableToPdf | linia:392 | Wyeksportowano tabelę do pliku tabela.pdf
 INFO  | 2026-06-20 05:26:13 | app.Window | closeApplication | linia:78 | Użytkownik próbuje zamknąć aplikację
 INFO  | 2026-06-20 05:26:14 | app.Window | closeApplication | linia:89 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 05:34:13 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 05:34:14 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 05:34:14 | app.ui.MainPanel | <init> | linia:88 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 05:34:14 | app.ui.MainPanel | <init> | linia:116 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 05:34:14 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 05:34:14 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 05:34:14 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 05:34:19 | app.Window | closeApplication | linia:115 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 05:34:20 | app.Window | closeApplication | linia:126 | Użytkownik potwierdził zamknięcie aplikacji

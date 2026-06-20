@@ -13,12 +13,37 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * Główne okno aplikacji.
+ * <p>
+ * Klasa tworzy główną ramkę programu, ustawia menu, pasek narzędzi,
+ * panel statusu, panel nawigacyjny JOutlookBar oraz panel główny aplikacji.
+ * Obsługuje również zamykanie programu oraz wyświetlenie okna Tip of the Day.
+ * </p>
+ *
+ * @author Antoni Gapiński
+ * @version 3.0
+ * @since 2026-06-20
+ */
 public class Window extends JFrame {
 
+    /**
+     * Logger służący do zapisu informacji o działaniu głównego okna aplikacji.
+     */
     private static final Logger logger = Logger.getLogger(Window.class);
 
+    /**
+     * Panel statusu wyświetlający komunikaty na dole okna.
+     */
     private final Status status;
 
+    /**
+     * Konstruktor głównego okna aplikacji.
+     * <p>
+     * Inicjalizuje układ graficzny programu, tworzy panele,
+     * podpina zdarzenia oraz uruchamia okno z poradą dnia.
+     * </p>
+     */
     public Window() {
         logger.info("Tworzenie głównego okna aplikacji");
 
@@ -60,6 +85,11 @@ public class Window extends JFrame {
         add(status, BorderLayout.SOUTH);
 
         addWindowListener(new WindowAdapter() {
+            /**
+             * Obsługuje próbę zamknięcia okna aplikacji.
+             *
+             * @param e zdarzenie zamknięcia okna
+             */
             @Override
             public void windowClosing(WindowEvent e) {
                 closeApplication();
@@ -74,6 +104,13 @@ public class Window extends JFrame {
         logger.info("Główne okno aplikacji zostało utworzone");
     }
 
+    /**
+     * Obsługuje zamykanie aplikacji.
+     * <p>
+     * Wyświetla okno potwierdzenia. Po zaakceptowaniu zamyka program,
+     * a po anulowaniu aktualizuje komunikat w panelu statusu.
+     * </p>
+     */
     public void closeApplication() {
         logger.info("Użytkownik próbuje zamknąć aplikację");
 
