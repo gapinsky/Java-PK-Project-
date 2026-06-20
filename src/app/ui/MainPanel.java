@@ -50,7 +50,10 @@ public class MainPanel extends JPanel {
     }
 
     private JPanel createInputPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel panel = new JPanel(new BorderLayout(5, 5));
+
+        JPanel selectorsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel numberLabel = new JLabel("Liczba:");
         JLabel rowLabel = new JLabel("Wiersz:");
@@ -64,18 +67,21 @@ public class MainPanel extends JPanel {
         clearButton.addActionListener(e -> clearTable());
         saveButton.addActionListener(e -> saveTableToFile());
 
-        panel.add(numberLabel);
-        panel.add(numberField);
+        selectorsPanel.add(numberLabel);
+        selectorsPanel.add(numberField);
 
-        panel.add(rowLabel);
-        panel.add(rowSlider);
+        selectorsPanel.add(rowLabel);
+        selectorsPanel.add(rowSlider);
 
-        panel.add(columnLabel);
-        panel.add(columnSlider);
+        selectorsPanel.add(columnLabel);
+        selectorsPanel.add(columnSlider);
 
-        panel.add(insertButton);
-        panel.add(clearButton);
-        panel.add(saveButton);
+        buttonsPanel.add(insertButton);
+        buttonsPanel.add(clearButton);
+        buttonsPanel.add(saveButton);
+
+        panel.add(selectorsPanel, BorderLayout.NORTH);
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -163,7 +169,7 @@ public class MainPanel extends JPanel {
             }
         }
 
-        resultArea.append("Tabela została wyzerowana.\n");
+        resultArea.append("Tabela została wyzerowana. Puste komórki są traktowane jako 0.\n");
     }
 
     private void calculateSelectedOperation() {
@@ -185,39 +191,40 @@ public class MainPanel extends JPanel {
     private void calculate(String operation) {
         try {
             double sum = 0;
-            int count = 0;
-            Double min = null;
-            Double max = null;
+            int count = table.getRowCount() * table.getColumnCount();
+
+            double min = 0;
+            double max = 0;
+            boolean firstCell = true;
 
             for (int row = 0; row < table.getRowCount(); row++) {
                 for (int column = 0; column < table.getColumnCount(); column++) {
                     Object cellValue = table.getValueAt(row, column);
 
-                    if (cellValue != null) {
-                        double value = Double.parseDouble(cellValue.toString());
+                    double value;
 
-                        sum += value;
-                        count++;
+                    if (cellValue == null || cellValue.toString().isEmpty()) {
+                        value = 0;
+                    } else {
+                        value = Double.parseDouble(cellValue.toString());
+                    }
 
-                        if (min == null || value < min) {
+                    sum += value;
+
+                    if (firstCell) {
+                        min = value;
+                        max = value;
+                        firstCell = false;
+                    } else {
+                        if (value < min) {
                             min = value;
                         }
 
-                        if (max == null || value > max) {
+                        if (value > max) {
                             max = value;
                         }
                     }
                 }
-            }
-
-            if (count == 0) {
-                JOptionPane.showMessageDialog(
-                        this,
-                        "Tabela jest pusta. Brak danych do obliczeń.",
-                        "Błąd",
-                        JOptionPane.ERROR_MESSAGE
-                );
-                return;
             }
 
             switch (operation) {
@@ -255,7 +262,7 @@ public class MainPanel extends JPanel {
                 for (int column = 0; column < table.getColumnCount(); column++) {
                     Object value = table.getValueAt(row, column);
 
-                    if (value == null) {
+                    if (value == null || value.toString().isEmpty()) {
                         writer.write("0");
                     } else {
                         writer.write(value.toString());
