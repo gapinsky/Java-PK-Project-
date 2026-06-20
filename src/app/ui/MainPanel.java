@@ -10,80 +10,25 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- * Główny panel roboczy aplikacji.
- * <p>
- * Panel zawiera pole tekstowe do wpisywania liczby, suwaki wyboru pozycji,
- * tabelę JTable, komponent JComboBox do wyboru operacji, kalendarz JCalendar,
- * wykres kołowy JFreeChart oraz pole wyników JTextArea.
- * </p>
- * <p>
- * Klasa obsługuje wstawianie danych do tabeli, czyszczenie tabeli,
- * obliczenia matematyczne, zapis do pliku tekstowego oraz eksport do PDF.
- * </p>
- *
- * @author Antoni Gapiński
- * @version 3.0
- * @since 2026-06-20
- */
 public class MainPanel extends JPanel {
 
-    /**
-     * Logger zapisujący zdarzenia związane z panelem głównym.
-     */
     private static final Logger logger = Logger.getLogger(MainPanel.class);
 
-    /**
-     * Pole tekstowe przeznaczone do wpisywania wartości liczbowej.
-     */
     private final JTextField numberField;
-
-    /**
-     * Suwak wyboru wiersza tabeli.
-     */
     private final JSlider rowSlider;
-
-    /**
-     * Suwak wyboru kolumny tabeli.
-     */
     private final JSlider columnSlider;
-
-    /**
-     * Widok tabeli danych.
-     */
     private final JTable table;
-
-    /**
-     * Pole tekstowe wyświetlające wyniki działań oraz wybrane daty.
-     */
     private final JTextArea resultArea;
-
-    /**
-     * Lista rozwijana z operacjami wykonywanymi na danych tabeli.
-     */
     private final JComboBox<Operation> operationComboBox;
-
-    /**
-     * Model danych tabeli zgodny ze wzorcem MVC.
-     */
     private final TableDataModel tableModel;
-
-    /**
-     * Panel wykresu kołowego prezentujący dane z tabeli.
-     */
     private final ChartPanelView chartPanelView;
 
-    /**
-     * Konstruktor głównego panelu aplikacji.
-     * <p>
-     * Inicjalizuje wszystkie komponenty graficzne oraz układa je w panelu.
-     * </p>
-     */
     public MainPanel() {
         logger.info("Tworzenie panelu głównego aplikacji");
 
@@ -104,23 +49,20 @@ public class MainPanel extends JPanel {
         table = new JTable(tableModel);
         table.setRowHeight(26);
 
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        table.setDefaultRenderer(Double.class, centerRenderer);
+
         resultArea = new JTextArea(4, 30);
         resultArea.setEditable(false);
 
         operationComboBox = new JComboBox<>(Operation.values());
 
-        add(createInputPanel(), BorderLayout.NORTH);
-        add(createCenterPanel(), BorderLayout.CENTER);
-        add(createBottomPanel(), BorderLayout.SOUTH);
+        add(createMainContentPanel(), BorderLayout.CENTER);
 
         logger.info("Panel główny aplikacji został utworzony");
     }
 
-    /**
-     * Konfiguruje wygląd oraz działanie suwaka.
-     *
-     * @param slider suwak do skonfigurowania
-     */
     private void setupSlider(JSlider slider) {
         slider.setMajorTickSpacing(1);
         slider.setMinorTickSpacing(1);
@@ -129,11 +71,6 @@ public class MainPanel extends JPanel {
         slider.setSnapToTicks(true);
     }
 
-    /**
-     * Tworzy górny panel wprowadzania danych.
-     *
-     * @return panel z polem tekstowym, suwakami oraz przyciskami
-     */
     private JPanel createInputPanel() {
         JPanel panel = new JPanel(new BorderLayout(5, 4));
 
@@ -164,10 +101,8 @@ public class MainPanel extends JPanel {
 
         selectorsPanel.add(numberLabel);
         selectorsPanel.add(numberField);
-
         selectorsPanel.add(rowLabel);
         selectorsPanel.add(rowSlider);
-
         selectorsPanel.add(columnLabel);
         selectorsPanel.add(columnSlider);
 
@@ -182,24 +117,27 @@ public class MainPanel extends JPanel {
         return panel;
     }
 
-    /**
-     * Tworzy środkową część interfejsu.
-     * <p>
-     * Panel zawiera tabelę, kalendarz oraz wykres kołowy.
-     * </p>
-     *
-     * @return panel środkowy aplikacji
-     */
-    private JPanel createCenterPanel() {
+    private JPanel createMainContentPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
+
+        JPanel leftPanel = new JPanel(new BorderLayout(5, 5));
+        leftPanel.add(createInputPanel(), BorderLayout.NORTH);
 
         JPanel tablePanel = new JPanel(new BorderLayout());
         tablePanel.setBorder(BorderFactory.createTitledBorder("Tabela 5x5"));
-        tablePanel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setPreferredSize(new Dimension(0, 190));
+        tablePanel.add(tableScrollPane, BorderLayout.CENTER);
+
+        JPanel leftCenterPanel = new JPanel(new BorderLayout(5, 5));
+        leftCenterPanel.add(tablePanel, BorderLayout.NORTH);
+        leftCenterPanel.add(createBottomPanel(), BorderLayout.CENTER);
+
+        leftPanel.add(leftCenterPanel, BorderLayout.CENTER);
 
         CalendarPanel calendarPanel = new CalendarPanel(resultArea);
         calendarPanel.setPreferredSize(new Dimension(300, 230));
-        calendarPanel.setMaximumSize(new Dimension(300, 230));
 
         JButton refreshChartButton = new JButton("Odśwież wykres");
         refreshChartButton.addActionListener(e -> {
@@ -212,31 +150,17 @@ public class MainPanel extends JPanel {
         chartWrapper.add(chartPanelView, BorderLayout.CENTER);
         chartWrapper.add(refreshChartButton, BorderLayout.SOUTH);
 
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        rightPanel.setPreferredSize(new Dimension(310, 0));
+        JPanel rightPanel = new JPanel(new BorderLayout(0, 8));
+        rightPanel.setPreferredSize(new Dimension(330, 0));
+        rightPanel.add(calendarPanel, BorderLayout.NORTH);
+        rightPanel.add(chartWrapper, BorderLayout.CENTER);
 
-        calendarPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        chartWrapper.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        rightPanel.add(calendarPanel);
-        rightPanel.add(Box.createVerticalStrut(8));
-        rightPanel.add(chartWrapper);
-
-        panel.add(tablePanel, BorderLayout.CENTER);
+        panel.add(leftPanel, BorderLayout.CENTER);
         panel.add(rightPanel, BorderLayout.EAST);
 
         return panel;
     }
 
-    /**
-     * Tworzy dolną część interfejsu.
-     * <p>
-     * Panel zawiera JComboBox wyboru operacji oraz JTextArea z wynikami.
-     * </p>
-     *
-     * @return dolny panel aplikacji
-     */
     private JPanel createBottomPanel() {
         JPanel panel = new JPanel(new BorderLayout(8, 6));
 
@@ -254,7 +178,7 @@ public class MainPanel extends JPanel {
         resultPanel.setBorder(BorderFactory.createTitledBorder("Wyniki obliczeń"));
 
         JScrollPane resultScrollPane = new JScrollPane(resultArea);
-        resultScrollPane.setPreferredSize(new Dimension(0, 95));
+        resultScrollPane.setPreferredSize(new Dimension(0, 105));
 
         resultPanel.add(resultScrollPane, BorderLayout.CENTER);
 
@@ -264,13 +188,6 @@ public class MainPanel extends JPanel {
         return panel;
     }
 
-    /**
-     * Wstawia wartość z pola tekstowego do tabeli.
-     * <p>
-     * Pozycja komórki wybierana jest za pomocą suwaków. Metoda obsługuje
-     * błędne dane wejściowe za pomocą wyjątku NumberFormatException.
-     * </p>
-     */
     private void insertValueIntoTable() {
         String text = numberField.getText();
 
@@ -314,21 +231,15 @@ public class MainPanel extends JPanel {
         }
     }
 
-    /**
-     * Czyści wszystkie dane z tabeli.
-     */
     public void clearTable() {
         tableModel.clear();
         chartPanelView.refreshChart();
 
-        resultArea.append("Tabela została wyzerowana. Puste komórki są traktowane jako 0.\n");
+        resultArea.append("Tabela została wyzerowana.\n");
 
         logger.info("Tabela została wyzerowana");
     }
 
-    /**
-     * Pobiera wybraną operację z JComboBox i uruchamia obliczenia.
-     */
     private void calculateSelectedOperation() {
         Operation selectedOperation = (Operation) operationComboBox.getSelectedItem();
 
@@ -347,33 +258,21 @@ public class MainPanel extends JPanel {
         calculate(selectedOperation);
     }
 
-    /**
-     * Oblicza sumę elementów tabeli.
-     */
     public void calculateSum() {
         operationComboBox.setSelectedItem(Operation.SUM);
         calculate(Operation.SUM);
     }
 
-    /**
-     * Oblicza średnią elementów tabeli.
-     */
     public void calculateAverage() {
         operationComboBox.setSelectedItem(Operation.AVERAGE);
         calculate(Operation.AVERAGE);
     }
 
-    /**
-     * Oblicza wartość minimalną i maksymalną z tabeli.
-     */
     public void calculateMinMax() {
         operationComboBox.setSelectedItem(Operation.MIN_MAX);
         calculate(Operation.MIN_MAX);
     }
 
-    /**
-     * Ustawia fokus na polu tekstowym liczby.
-     */
     public void focusNumberField() {
         numberField.requestFocusInWindow();
         resultArea.append("Akcja nawigacji: ustawiono fokus na polu liczby.\n");
@@ -381,11 +280,6 @@ public class MainPanel extends JPanel {
         logger.info("Ustawiono fokus na polu tekstowym liczby");
     }
 
-    /**
-     * Wykonuje wybraną operację matematyczną na danych z tabeli.
-     *
-     * @param operation operacja do wykonania
-     */
     private void calculate(Operation operation) {
         logger.info("Wykonywanie operacji: " + operation);
 
@@ -436,9 +330,6 @@ public class MainPanel extends JPanel {
         }
     }
 
-    /**
-     * Zapisuje zawartość tabeli do pliku tekstowego tabela.txt.
-     */
     public void saveTableToFile() {
         try (FileWriter writer = new FileWriter("tabela.txt")) {
             for (int row = 0; row < tableModel.getRowCount(); row++) {
@@ -477,12 +368,6 @@ public class MainPanel extends JPanel {
         }
     }
 
-    /**
-     * Eksportuje zawartość tabeli do pliku PDF.
-     * <p>
-     * Plik zapisywany jest w głównym folderze projektu pod nazwą tabela.pdf.
-     * </p>
-     */
     public void exportTableToPdf() {
         Document document = new Document();
 

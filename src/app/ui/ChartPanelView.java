@@ -11,10 +11,6 @@ import java.awt.*;
 
 /**
  * Panel wykresu kołowego utworzony przy użyciu biblioteki JFreeChart.
- * <p>
- * Wykres prezentuje dane z tabeli w trzech kategoriach:
- * suma wartości dodatnich, suma wartości ujemnych oraz liczba zer.
- * </p>
  *
  * @author Antoni Gapiński
  * @version 3.0
@@ -22,21 +18,9 @@ import java.awt.*;
  */
 public class ChartPanelView extends JPanel {
 
-    /**
-     * Model danych tabeli, z którego pobierane są wartości do wykresu.
-     */
     private final TableDataModel tableModel;
-
-    /**
-     * Panel JFreeChart wyświetlający wykres kołowy.
-     */
     private final org.jfree.chart.ChartPanel chartPanel;
 
-    /**
-     * Konstruktor panelu wykresu.
-     *
-     * @param tableModel model danych tabeli używany jako źródło danych wykresu
-     */
     public ChartPanelView(TableDataModel tableModel) {
         this.tableModel = tableModel;
 
@@ -44,23 +28,19 @@ public class ChartPanelView extends JPanel {
 
         JFreeChart chart = createChart();
         chartPanel = new org.jfree.chart.ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(300, 230));
+        chartPanel.setPreferredSize(new Dimension(320, 280));
+        chartPanel.setMinimumDrawWidth(250);
+        chartPanel.setMinimumDrawHeight(220);
+        chartPanel.setMaximumDrawWidth(900);
+        chartPanel.setMaximumDrawHeight(700);
 
         add(chartPanel, BorderLayout.CENTER);
     }
 
-    /**
-     * Odświeża wykres na podstawie aktualnych danych w tabeli.
-     */
     public void refreshChart() {
         chartPanel.setChart(createChart());
     }
 
-    /**
-     * Tworzy wykres kołowy na podstawie danych z tabeli.
-     *
-     * @return obiekt JFreeChart reprezentujący wykres kołowy
-     */
     private JFreeChart createChart() {
         DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
 

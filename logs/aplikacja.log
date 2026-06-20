@@ -30,3 +30,86 @@ INFO  | 2026-06-20 05:34:14 | app.Main | lambda$main$0 | linia:40 | Okno aplikac
 INFO  | 2026-06-20 05:34:14 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
 INFO  | 2026-06-20 05:34:19 | app.Window | closeApplication | linia:115 | Użytkownik próbuje zamknąć aplikację
 INFO  | 2026-06-20 05:34:20 | app.Window | closeApplication | linia:126 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 07:25:48 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 07:25:48 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 07:25:48 | app.ui.MainPanel | <init> | linia:88 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 07:25:49 | app.ui.MainPanel | <init> | linia:116 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 07:25:49 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 07:25:49 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 07:25:49 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 07:26:17 | app.ui.MainPanel | lambda$createCenterPanel$0 | linia:206 | Odświeżenie wykresu kołowego
+INFO  | 2026-06-20 07:26:33 | app.Window | closeApplication | linia:115 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 07:26:36 | app.Window | closeApplication | linia:126 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 09:35:49 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 09:35:50 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 09:35:50 | app.ui.MainPanel | <init> | linia:88 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 09:35:50 | app.ui.MainPanel | <init> | linia:116 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 09:35:50 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 09:35:50 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 09:35:50 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 09:45:24 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 09:45:25 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 09:45:25 | app.ui.MainPanel | <init> | linia:88 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 09:45:25 | app.ui.MainPanel | <init> | linia:116 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 09:45:25 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 09:45:25 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 09:45:25 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 09:51:17 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 09:51:17 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 09:51:17 | app.ui.MainPanel | <init> | linia:88 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 09:51:18 | app.ui.MainPanel | <init> | linia:116 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 09:51:18 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 09:51:18 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 09:51:18 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 09:56:00 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 09:56:01 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 09:56:01 | app.ui.MainPanel | <init> | linia:89 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 09:56:01 | app.ui.MainPanel | <init> | linia:122 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 09:56:01 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 09:56:01 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 09:56:01 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 10:10:04 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 10:10:05 | app.Window | <init> | linia:48 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 10:10:05 | app.ui.MainPanel | <init> | linia:89 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 10:10:05 | app.ui.MainPanel | <init> | linia:122 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 10:10:05 | app.Window | <init> | linia:104 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 10:10:05 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 10:10:05 | app.Window | lambda$new$0 | linia:100 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 10:10:23 | app.Window | closeApplication | linia:115 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 10:10:25 | app.Window | closeApplication | linia:130 | Użytkownik anulował zamknięcie aplikacji
+INFO  | 2026-06-20 10:26:49 | app.Window | closeApplication | linia:115 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 10:26:50 | app.Window | closeApplication | linia:126 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 10:26:57 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 10:26:57 | app.Window | <init> | linia:30 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 10:26:57 | app.ui.MainPanel | <init> | linia:40 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 10:26:57 | app.ui.MainPanel | <init> | linia:71 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 10:26:57 | app.Window | <init> | linia:82 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 10:26:57 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 10:26:57 | app.Window | lambda$new$0 | linia:78 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 10:36:39 | app.Window | closeApplication | linia:86 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 10:36:41 | app.Window | closeApplication | linia:97 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 10:36:50 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 10:36:50 | app.Window | <init> | linia:23 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 10:36:50 | app.ui.MainPanel | <init> | linia:33 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 10:36:50 | app.ui.MainPanel | <init> | linia:63 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 10:36:51 | app.Window | <init> | linia:75 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 10:36:51 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 10:36:51 | app.Window | lambda$new$0 | linia:71 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 10:56:44 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 10:56:44 | app.Window | <init> | linia:23 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 10:56:44 | app.ui.MainPanel | <init> | linia:33 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 10:56:44 | app.ui.MainPanel | <init> | linia:63 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 10:56:44 | app.Window | <init> | linia:75 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 10:56:44 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 10:56:44 | app.Window | lambda$new$0 | linia:71 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 10:57:01 | app.Window | closeApplication | linia:79 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 10:57:03 | app.Window | closeApplication | linia:90 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 10:58:02 | app.Main | main | linia:34 | Uruchamianie aplikacji
+INFO  | 2026-06-20 10:58:03 | app.Window | <init> | linia:23 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 10:58:03 | app.ui.MainPanel | <init> | linia:33 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 10:58:03 | app.ui.MainPanel | <init> | linia:63 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 10:58:03 | app.Window | <init> | linia:75 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 10:58:03 | app.Main | lambda$main$0 | linia:40 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 10:58:03 | app.Window | lambda$new$0 | linia:71 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 11:07:25 | app.Window | closeApplication | linia:79 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 11:07:27 | app.Window | closeApplication | linia:90 | Użytkownik potwierdził zamknięcie aplikacji

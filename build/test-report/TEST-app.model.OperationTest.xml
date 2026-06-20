@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="ag-delete" name="app.model.OperationTest" skipped="0" tests="4" time="0.092" timestamp="2026-06-20T04:29:26">
+<testsuite errors="0" failures="0" hostname="ag-delete" name="app.model.OperationTest" skipped="0" tests="4" time="0.24" timestamp="2026-06-20T09:15:58">
   <properties>
     <property name="ant.library.dir" value="C:\Users\Antek\java\apache-ant-1.10.17\lib" />
     <property name="ant.file.type.JavaPKProject" value="file" />
@@ -18,7 +18,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD" />
     <property name="user.country" value="US" />
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25.0.3\bin" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner app.model.OperationTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter,C:\Users\Antek\java\app\build\test-report\TEST-app.model.OperationTest.txt formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Antek\java\app\build\test-report\TEST-app.model.OperationTest.xml crashfile=C:\Users\Antek\java\app\junitvmwatcher14789022260108327627.properties propsfile=C:\Users\Antek\java\app\junit3657336049018294583.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner app.model.OperationTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter,C:\Users\Antek\java\app\build\test-report\TEST-app.model.OperationTest.txt formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\Antek\java\app\build\test-report\TEST-app.model.OperationTest.xml crashfile=C:\Users\Antek\java\app\junitvmwatcher8841438868536184155.properties propsfile=C:\Users\Antek\java\app\junit5732871635538952996.properties" />
     <property name="test.classes.dir" value="build/test-classes" />
     <property name="jdk.debug" value="release" />
     <property name="main.class" value="app.Main" />
@@ -78,10 +78,10 @@
     <property name="src.dir" value="src" />
     <property name="ant.project.default-target" value="all" />
   </properties>
-  <testcase classname="app.model.OperationTest" name="shouldContainThreeOperations" time="0.006" />
-  <testcase classname="app.model.OperationTest" name="shouldReturnMinMaxLabel" time="0.0" />
-  <testcase classname="app.model.OperationTest" name="shouldReturnAverageLabel" time="0.0" />
-  <testcase classname="app.model.OperationTest" name="shouldReturnSumLabel" time="0.0" />
+  <testcase classname="app.model.OperationTest" name="shouldContainThreeOperations" time="0.016" />
+  <testcase classname="app.model.OperationTest" name="shouldReturnMinMaxLabel" time="0.001" />
+  <testcase classname="app.model.OperationTest" name="shouldReturnAverageLabel" time="0.001" />
+  <testcase classname="app.model.OperationTest" name="shouldReturnSumLabel" time="0.001" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
