@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="JavaPKProject" default="all" basedir=".">
+
+    <!-- Główne katalogi projektu -->
+    <property name="src.dir" value="src"/>
+    <property name="test.dir" value="test"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="bin.dir" value="bin"/>
+    <property name="build.dir" value="build"/>
+    <property name="test.classes.dir" value="${build.dir}/test-classes"/>
+    <property name="test.report.dir" value="${build.dir}/test-report"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="doc.dir" value="doc"/>
+
+    <!-- Klasa startowa aplikacji -->
+    <property name="main.class" value="app.Main"/>
+    <property name="jar.name" value="JavaPKProject.jar"/>
+
+    <!-- Ścieżka bibliotek potrzebnych do kompilacji i uruchomienia -->
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <!-- Ścieżka bibliotek potrzebnych do testów -->
+    <path id="test.classpath">
+        <pathelement location="${bin.dir}"/>
+        <pathelement location="${test.classes.dir}"/>
+        <path refid="compile.classpath"/>
+    </path>
+
+    <!-- Domyślne zadanie budujące cały projekt -->
+    <target name="all" depends="clean, compile, javadoc, test, jar"
+            description="Czyści projekt, kompiluje kod, generuje Javadoc, wykonuje testy i tworzy JAR."/>
+
+    <!-- Usuwa katalogi wygenerowane przez poprzednie budowanie -->
+    <target name="clean" description="Czyści katalogi bin, build, dist oraz doc.">
+        <delete dir="${bin.dir}"/>
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete dir="${doc.dir}"/>
+    </target>
+
+    <!-- Przygotowuje strukturę katalogów -->
+    <target name="prepare" description="Tworzy katalogi wymagane do budowania projektu.">
+        <mkdir dir="${bin.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${test.classes.dir}"/>
+        <mkdir dir="${test.report.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${dist.dir}/lib"/>
+        <mkdir dir="${doc.dir}"/>
+        <mkdir dir="${bin.dir}/logs"/>
+        <mkdir dir="logs"/>
+    </target>
+
+    <!-- Kompiluje pliki źródłowe Java do katalogu bin -->
+    <target name="compile" depends="prepare" description="Kompiluje pliki źródłowe Java do katalogu bin.">
+        <javac srcdir="${src.dir}"
+               destdir="${bin.dir}"
+               includeantruntime="false"
+               encoding="UTF-8">
+            <classpath refid="compile.classpath"/>
+        </javac>
+
+        <copy todir="${bin.dir}">
+            <fileset dir="${src.dir}">
+                <include name="log4j.xml"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Kompiluje testy jednostkowe -->
+    <target name="compile-tests" depends="compile" description="Kompiluje testy jednostkowe JUnit.">
+        <javac srcdir="${test.dir}"
+               destdir="${test.classes.dir}"
+               includeantruntime="false"
+               encoding="UTF-8">
+            <classpath refid="test.classpath"/>
+        </javac>
+    </target>
+
+    <!-- Wykonuje testy jednostkowe oraz generuje raport HTML -->
+    <target name="test" depends="compile-tests" description="Uruchamia testy JUnit i generuje raport testów.">
+        <junit printsummary="yes"
+               haltonfailure="no"
+               fork="true">
+            <classpath refid="test.classpath"/>
+
+            <formatter type="plain"/>
+            <formatter type="xml"/>
+
+            <batchtest todir="${test.report.dir}">
+                <fileset dir="${test.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${test.report.dir}">
+            <fileset dir="${test.report.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${test.report.dir}/html"/>
+        </junitreport>
+    </target>
+
+    <!-- Generuje dokumentację Javadoc do katalogu doc -->
+    <target name="javadoc" depends="compile" description="Generuje dokumentację Javadoc do katalogu doc.">
+        <javadoc sourcepath="${src.dir}"
+                 destdir="${doc.dir}"
+                 encoding="UTF-8"
+                 charset="UTF-8"
+                 docencoding="UTF-8"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="Dokumentacja JavaPKProject"
+                 doctitle="Dokumentacja projektu JavaPKProject">
+            <classpath refid="compile.classpath"/>
+            <packageset dir="${src.dir}">
+                <include name="app/**"/>
+            </packageset>
+        </javadoc>
+    </target>
+
+    <!-- Kopiuje biblioteki do katalogu dystrybucyjnego -->
+    <target name="copy-libs" depends="prepare" description="Kopiuje biblioteki JAR do katalogu dist/lib.">
+        <copy todir="${dist.dir}/lib">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- Tworzy wykonywalny plik JAR w katalogu dist -->
+    <target name="jar" depends="compile, copy-libs" description="Tworzy wykonywalne archiwum JAR aplikacji.">
+        <manifestclasspath property="jar.classpath"
+                           jarfile="${dist.dir}/${jar.name}">
+            <classpath>
+                <fileset dir="${dist.dir}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </manifestclasspath>
+
+        <jar destfile="${dist.dir}/${jar.name}"
+             basedir="${bin.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="${jar.classpath}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- Uruchamia aplikację z katalogu bin -->
+    <target name="run" depends="compile" description="Uruchamia aplikację z katalogu bin.">
+        <java classname="${main.class}"
+              fork="true"
+              dir="${bin.dir}">
+            <classpath>
+                <pathelement location="${bin.dir}"/>
+                <path refid="compile.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- Uruchamia aplikację z pliku JAR znajdującego się w katalogu dist -->
+    <target name="run-jar" depends="jar" description="Uruchamia aplikację z wykonywalnego JAR.">
+        <mkdir dir="${dist.dir}/logs"/>
+
+        <java jar="${dist.dir}/${jar.name}"
+              fork="true"
+              dir="${dist.dir}"/>
+    </target>
+
+</project>

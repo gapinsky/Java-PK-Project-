@@ -1,0 +1,9 @@
+Testsuite: app.model.TableDataModelTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.11 sec
+
+Testcase: shouldReturnZeroForEmptyCell took 0.005 sec
+Testcase: shouldAllowCellEditing took 0 sec
+Testcase: shouldClearTableData took 0.001 sec
+Testcase: shouldCreateTableWithFiveRowsAndFiveColumns took 0 sec
+Testcase: shouldSetNumericValueInCell took 0 sec
+Testcase: shouldSetValueUsingSetValueAt took 0.002 sec

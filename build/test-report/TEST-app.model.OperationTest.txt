@@ -1,0 +1,7 @@
+Testsuite: app.model.OperationTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.092 sec
+
+Testcase: shouldContainThreeOperations took 0.005 sec
+Testcase: shouldReturnMinMaxLabel took 0 sec
+Testcase: shouldReturnAverageLabel took 0 sec
+Testcase: shouldReturnSumLabel took 0 sec
