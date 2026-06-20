@@ -13,7 +13,8 @@ public class NavigationPanel extends JPanel {
             Runnable calculateSumAction,
             Runnable calculateAverageAction,
             Runnable calculateMinMaxAction,
-            Runnable saveToFileAction
+            Runnable saveToFileAction,
+            Runnable exportPdfAction
     ) {
         setLayout(new BorderLayout());
 
@@ -45,9 +46,15 @@ public class NavigationPanel extends JPanel {
         ));
 
         JButton saveButton = new JButton("Zapis do pliku");
-        saveButton.addActionListener(e -> saveToFileAction.run());
+        JButton pdfButton = new JButton("Eksport PDF");
 
-        outlookBar.addTab("Plik", createButtonPanel(saveButton));
+        saveButton.addActionListener(e -> saveToFileAction.run());
+        pdfButton.addActionListener(e -> exportPdfAction.run());
+
+        outlookBar.addTab("Plik", createButtonPanel(
+                saveButton,
+                pdfButton
+        ));
 
         add(outlookBar, BorderLayout.CENTER);
     }

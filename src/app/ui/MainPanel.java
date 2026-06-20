@@ -2,13 +2,22 @@ package app.ui;
 
 import app.model.Operation;
 import app.model.TableDataModel;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class MainPanel extends JPanel {
+
+    private static final Logger logger = Logger.getLogger(MainPanel.class);
 
     private final JTextField numberField;
     private final JSlider rowSlider;
@@ -20,6 +29,8 @@ public class MainPanel extends JPanel {
     private final ChartPanelView chartPanelView;
 
     public MainPanel() {
+        logger.info("Tworzenie panelu głównego aplikacji");
+
         setLayout(new BorderLayout(10, 8));
         setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
 
@@ -45,6 +56,8 @@ public class MainPanel extends JPanel {
         add(createInputPanel(), BorderLayout.NORTH);
         add(createCenterPanel(), BorderLayout.CENTER);
         add(createBottomPanel(), BorderLayout.SOUTH);
+
+        logger.info("Panel główny aplikacji został utworzony");
     }
 
     private void setupSlider(JSlider slider) {
@@ -76,10 +89,12 @@ public class MainPanel extends JPanel {
         JButton insertButton = new JButton("Wstaw do tabeli");
         JButton clearButton = new JButton("Zeruj tabelę");
         JButton saveButton = new JButton("Zapisz do pliku");
+        JButton pdfButton = new JButton("Eksport PDF");
 
         insertButton.addActionListener(e -> insertValueIntoTable());
         clearButton.addActionListener(e -> clearTable());
         saveButton.addActionListener(e -> saveTableToFile());
+        pdfButton.addActionListener(e -> exportTableToPdf());
 
         selectorsPanel.add(numberLabel);
         selectorsPanel.add(numberField);
@@ -93,6 +108,7 @@ public class MainPanel extends JPanel {
         buttonsPanel.add(insertButton);
         buttonsPanel.add(clearButton);
         buttonsPanel.add(saveButton);
+        buttonsPanel.add(pdfButton);
 
         panel.add(selectorsPanel, BorderLayout.NORTH);
         panel.add(buttonsPanel, BorderLayout.SOUTH);
@@ -112,7 +128,10 @@ public class MainPanel extends JPanel {
         calendarPanel.setMaximumSize(new Dimension(300, 230));
 
         JButton refreshChartButton = new JButton("Odśwież wykres");
-        refreshChartButton.addActionListener(e -> chartPanelView.refreshChart());
+        refreshChartButton.addActionListener(e -> {
+            logger.info("Odświeżenie wykresu kołowego");
+            chartPanelView.refreshChart();
+        });
 
         JPanel chartWrapper = new JPanel(new BorderLayout());
         chartWrapper.setBorder(BorderFactory.createTitledBorder("Wykres kołowy"));
@@ -167,6 +186,8 @@ public class MainPanel extends JPanel {
         String text = numberField.getText();
 
         if (text.isEmpty()) {
+            logger.error("Próba wstawienia pustej wartości do tabeli");
+
             JOptionPane.showMessageDialog(
                     this,
                     "Wpisz liczbę w pole tekstowe.",
@@ -188,9 +209,13 @@ public class MainPanel extends JPanel {
             resultArea.append("Wstawiono wartość " + value +
                     " do komórki [" + row + ", " + column + "]\n");
 
+            logger.info("Wstawiono wartość " + value + " do komórki [" + row + ", " + column + "]");
+
             numberField.setText("");
 
         } catch (NumberFormatException exception) {
+            logger.error("Podano niepoprawną wartość liczbową: " + text, exception);
+
             JOptionPane.showMessageDialog(
                     this,
                     "Podana wartość nie jest poprawną liczbą.",
@@ -205,12 +230,16 @@ public class MainPanel extends JPanel {
         chartPanelView.refreshChart();
 
         resultArea.append("Tabela została wyzerowana. Puste komórki są traktowane jako 0.\n");
+
+        logger.info("Tabela została wyzerowana");
     }
 
     private void calculateSelectedOperation() {
         Operation selectedOperation = (Operation) operationComboBox.getSelectedItem();
 
         if (selectedOperation == null) {
+            logger.error("Nie wybrano operacji w JComboBox");
+
             JOptionPane.showMessageDialog(
                     this,
                     "Wybierz operację z pola JComboBox.",
@@ -241,9 +270,13 @@ public class MainPanel extends JPanel {
     public void focusNumberField() {
         numberField.requestFocusInWindow();
         resultArea.append("Akcja nawigacji: ustawiono fokus na polu liczby.\n");
+
+        logger.info("Ustawiono fokus na polu tekstowym liczby");
     }
 
     private void calculate(Operation operation) {
+        logger.info("Wykonywanie operacji: " + operation);
+
         double sum = 0;
         double min = 0;
         double max = 0;
@@ -274,16 +307,19 @@ public class MainPanel extends JPanel {
         switch (operation) {
             case SUM:
                 resultArea.append("Suma elementów: " + sum + "\n");
+                logger.info("Obliczono sumę elementów: " + sum);
                 break;
 
             case AVERAGE:
                 double average = sum / tableModel.getElementsCount();
                 resultArea.append("Średnia elementów: " + average + "\n");
+                logger.info("Obliczono średnią elementów: " + average);
                 break;
 
             case MIN_MAX:
                 resultArea.append("Wartość maksymalna: " + max + "\n");
                 resultArea.append("Wartość minimalna: " + min + "\n");
+                logger.info("Obliczono wartość minimalną: " + min + " oraz maksymalną: " + max);
                 break;
         }
     }
@@ -305,6 +341,8 @@ public class MainPanel extends JPanel {
 
             resultArea.append("Zapisano zawartość tabeli do pliku tabela.txt\n");
 
+            logger.info("Zapisano tabelę do pliku tabela.txt");
+
             JOptionPane.showMessageDialog(
                     this,
                     "Zapisano plik tabela.txt w folderze projektu.",
@@ -313,12 +351,67 @@ public class MainPanel extends JPanel {
             );
 
         } catch (IOException exception) {
+            logger.error("Błąd podczas zapisu tabeli do pliku", exception);
+
             JOptionPane.showMessageDialog(
                     this,
                     "Nie udało się zapisać pliku.",
                     "Błąd zapisu",
                     JOptionPane.ERROR_MESSAGE
             );
+        }
+    }
+
+    public void exportTableToPdf() {
+        Document document = new Document();
+
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("tabela.pdf"));
+            document.open();
+
+            document.add(new Paragraph("Eksport danych z tabeli 5x5"));
+            document.add(new Paragraph(" "));
+
+            PdfPTable pdfTable = new PdfPTable(tableModel.getColumnCount());
+
+            for (int column = 0; column < tableModel.getColumnCount(); column++) {
+                pdfTable.addCell("Kolumna " + column);
+            }
+
+            for (int row = 0; row < tableModel.getRowCount(); row++) {
+                for (int column = 0; column < tableModel.getColumnCount(); column++) {
+                    double value = tableModel.getNumericValueAt(row, column);
+                    pdfTable.addCell(String.valueOf(value));
+                }
+            }
+
+            document.add(pdfTable);
+
+            resultArea.append("Wyeksportowano tabelę do pliku tabela.pdf\n");
+
+            logger.info("Wyeksportowano tabelę do pliku tabela.pdf");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Wyeksportowano tabelę do pliku tabela.pdf.",
+                    "Eksport PDF",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+        } catch (DocumentException | IOException exception) {
+            logger.error("Błąd podczas eksportu tabeli do PDF", exception);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nie udało się wyeksportować tabeli do PDF.",
+                    "Błąd eksportu PDF",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+        } finally {
+            if (document.isOpen()) {
+                document.close();
+            }
         }
     }
 }

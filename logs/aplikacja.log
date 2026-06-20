@@ -1,0 +1,23 @@
+INFO  | 2026-06-20 05:18:55 | app.Main | main | linia:12 | Uruchamianie aplikacji
+INFO  | 2026-06-20 05:18:56 | app.Window | <init> | linia:23 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 05:18:56 | app.ui.MainPanel | <init> | linia:26 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 05:18:56 | app.ui.MainPanel | <init> | linia:54 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 05:18:56 | app.Window | <init> | linia:73 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 05:18:56 | app.Main | lambda$main$0 | linia:18 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 05:18:56 | app.Window | lambda$new$0 | linia:69 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 05:19:02 | app.Window | closeApplication | linia:77 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 05:19:04 | app.Window | closeApplication | linia:88 | Użytkownik potwierdził zamknięcie aplikacji
+INFO  | 2026-06-20 05:24:54 | app.Main | main | linia:12 | Uruchamianie aplikacji
+INFO  | 2026-06-20 05:24:54 | app.Window | <init> | linia:23 | Tworzenie głównego okna aplikacji
+INFO  | 2026-06-20 05:24:54 | app.ui.MainPanel | <init> | linia:32 | Tworzenie panelu głównego aplikacji
+INFO  | 2026-06-20 05:24:54 | app.ui.MainPanel | <init> | linia:60 | Panel główny aplikacji został utworzony
+INFO  | 2026-06-20 05:24:54 | app.Window | <init> | linia:74 | Główne okno aplikacji zostało utworzone
+INFO  | 2026-06-20 05:24:54 | app.Main | lambda$main$0 | linia:18 | Okno aplikacji zostało wyświetlone
+INFO  | 2026-06-20 05:24:54 | app.Window | lambda$new$0 | linia:70 | Wyświetlanie okna Tip of the Day
+INFO  | 2026-06-20 05:25:10 | app.ui.MainPanel | insertValueIntoTable | linia:212 | Wstawiono wartość 5.0 do komórki [0, 0]
+INFO  | 2026-06-20 05:25:13 | app.ui.MainPanel | insertValueIntoTable | linia:212 | Wstawiono wartość 6.0 do komórki [1, 0]
+INFO  | 2026-06-20 05:25:18 | app.ui.MainPanel | insertValueIntoTable | linia:212 | Wstawiono wartość 4.0 do komórki [0, 1]
+INFO  | 2026-06-20 05:25:23 | app.ui.MainPanel | saveTableToFile | linia:344 | Zapisano tabelę do pliku tabela.txt
+INFO  | 2026-06-20 05:25:26 | app.ui.MainPanel | exportTableToPdf | linia:392 | Wyeksportowano tabelę do pliku tabela.pdf
+INFO  | 2026-06-20 05:26:13 | app.Window | closeApplication | linia:78 | Użytkownik próbuje zamknąć aplikację
+INFO  | 2026-06-20 05:26:14 | app.Window | closeApplication | linia:89 | Użytkownik potwierdził zamknięcie aplikacji
