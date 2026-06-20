@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="l2fprod-common-totd-6.9.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/l2fprod-common-totd-6.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -7,41 +7,58 @@ import java.awt.*;
 
 public class NavigationPanel extends JPanel {
 
-    public NavigationPanel() {
+    public NavigationPanel(
+            Runnable focusNumberFieldAction,
+            Runnable clearTableAction,
+            Runnable calculateSumAction,
+            Runnable calculateAverageAction,
+            Runnable calculateMinMaxAction,
+            Runnable saveToFileAction
+    ) {
         setLayout(new BorderLayout());
 
         JOutlookBar outlookBar = new JOutlookBar();
 
-        outlookBar.addTab("Tabela", createTextPanel(
-                "Panel tabeli",
-                "W tej części aplikacji wpisujesz liczby do tabeli 5x5."
+        JButton focusButton = new JButton("Wstaw dane");
+        JButton clearButton = new JButton("Zeruj tabelę");
+
+        focusButton.addActionListener(e -> focusNumberFieldAction.run());
+        clearButton.addActionListener(e -> clearTableAction.run());
+
+        outlookBar.addTab("Tabela", createButtonPanel(
+                focusButton,
+                clearButton
         ));
 
-        outlookBar.addTab("Obliczenia", createTextPanel(
-                "Panel obliczeń",
-                "Tutaj wybierasz operację: suma, średnia albo wartość max/min."
+        JButton sumButton = new JButton("Suma");
+        JButton averageButton = new JButton("Średnia");
+        JButton minMaxButton = new JButton("Min / Max");
+
+        sumButton.addActionListener(e -> calculateSumAction.run());
+        averageButton.addActionListener(e -> calculateAverageAction.run());
+        minMaxButton.addActionListener(e -> calculateMinMaxAction.run());
+
+        outlookBar.addTab("Obliczenia", createButtonPanel(
+                sumButton,
+                averageButton,
+                minMaxButton
         ));
 
-        outlookBar.addTab("Plik", createTextPanel(
-                "Panel pliku",
-                "Funkcja zapisu zapisuje zawartość tabeli do pliku tabela.txt."
-        ));
+        JButton saveButton = new JButton("Zapis do pliku");
+        saveButton.addActionListener(e -> saveToFileAction.run());
+
+        outlookBar.addTab("Plik", createButtonPanel(saveButton));
 
         add(outlookBar, BorderLayout.CENTER);
     }
 
-    private JPanel createTextPanel(String title, String description) {
-        JPanel panel = new JPanel(new BorderLayout());
+    private JPanel createButtonPanel(JButton... buttons) {
+        JPanel panel = new JPanel(new GridLayout(0, 1, 5, 5));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel label = new JLabel(
-                "<html><center>" +
-                        "<h3>" + title + "</h3>" +
-                        "<p>" + description + "</p>" +
-                        "</center></html>",
-                SwingConstants.CENTER
-        );
-
-        panel.add(label, BorderLayout.CENTER);
+        for (JButton button : buttons) {
+            panel.add(button);
+        }
 
         return panel;
     }

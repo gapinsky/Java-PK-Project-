@@ -1,9 +1,11 @@
 package app;
 
-import app.ui.Menu;
-import app.ui.Tool;
-import app.ui.Status;
 import app.ui.MainPanel;
+import app.ui.Menu;
+import app.ui.NavigationPanel;
+import app.ui.Status;
+import app.ui.Tool;
+import app.ui.TipOfTheDayService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,7 @@ public class Window extends JFrame {
 
     public Window() {
         setTitle("Projekt Java - Interfejs GUI");
-        setSize(900, 600);
+        setSize(1200, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
@@ -24,7 +26,31 @@ public class Window extends JFrame {
 
         setJMenuBar(new Menu(this, status));
         add(new Tool(this, status), BorderLayout.NORTH);
-        add(new MainPanel(), BorderLayout.CENTER);
+
+        MainPanel mainPanel = new MainPanel();
+
+        NavigationPanel navigationPanel = new NavigationPanel(
+                mainPanel::focusNumberField,
+                mainPanel::clearTable,
+                mainPanel::calculateSum,
+                mainPanel::calculateAverage,
+                mainPanel::calculateMinMax,
+                mainPanel::saveTableToFile
+        );
+
+        navigationPanel.setMinimumSize(new Dimension(150, 0));
+        mainPanel.setMinimumSize(new Dimension(700, 0));
+
+        JSplitPane splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                navigationPanel,
+                mainPanel
+        );
+
+        splitPane.setDividerLocation(180);
+        splitPane.setResizeWeight(0);
+
+        add(splitPane, BorderLayout.CENTER);
         add(status, BorderLayout.SOUTH);
 
         addWindowListener(new WindowAdapter() {
@@ -33,6 +59,8 @@ public class Window extends JFrame {
                 closeApplication();
             }
         });
+
+        SwingUtilities.invokeLater(() -> TipOfTheDayService.showTip(this));
     }
 
     public void closeApplication() {

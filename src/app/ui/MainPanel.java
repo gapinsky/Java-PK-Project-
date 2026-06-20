@@ -17,10 +17,11 @@ public class MainPanel extends JPanel {
     private final JTextArea resultArea;
     private final JComboBox<Operation> operationComboBox;
     private final TableDataModel tableModel;
+    private final ChartPanelView chartPanelView;
 
     public MainPanel() {
-        setLayout(new BorderLayout(10, 10));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new BorderLayout(10, 8));
+        setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
 
         numberField = new JTextField(10);
 
@@ -31,34 +32,46 @@ public class MainPanel extends JPanel {
         setupSlider(columnSlider);
 
         tableModel = new TableDataModel();
-        table = new JTable(tableModel);
-        table.setRowHeight(28);
+        chartPanelView = new ChartPanelView(tableModel);
 
-        resultArea = new JTextArea(7, 30);
+        table = new JTable(tableModel);
+        table.setRowHeight(26);
+
+        resultArea = new JTextArea(4, 30);
         resultArea.setEditable(false);
 
         operationComboBox = new JComboBox<>(Operation.values());
 
         add(createInputPanel(), BorderLayout.NORTH);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        add(createCenterPanel(), BorderLayout.CENTER);
         add(createBottomPanel(), BorderLayout.SOUTH);
     }
 
     private void setupSlider(JSlider slider) {
         slider.setMajorTickSpacing(1);
+        slider.setMinorTickSpacing(1);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
+        slider.setSnapToTicks(true);
     }
 
     private JPanel createInputPanel() {
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
+        JPanel panel = new JPanel(new BorderLayout(5, 4));
 
-        JPanel selectorsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel selectorsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 3));
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 3));
 
         JLabel numberLabel = new JLabel("Liczba:");
         JLabel rowLabel = new JLabel("Wiersz:");
         JLabel columnLabel = new JLabel("Kolumna:");
+
+        numberField.setPreferredSize(new Dimension(110, 24));
+
+        rowSlider.setPreferredSize(new Dimension(170, 42));
+        rowSlider.setMaximumSize(new Dimension(170, 42));
+
+        columnSlider.setPreferredSize(new Dimension(170, 42));
+        columnSlider.setMaximumSize(new Dimension(170, 42));
 
         JButton insertButton = new JButton("Wstaw do tabeli");
         JButton clearButton = new JButton("Zeruj tabelę");
@@ -87,14 +100,49 @@ public class MainPanel extends JPanel {
         return panel;
     }
 
-    private JPanel createBottomPanel() {
+    private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
 
-        JPanel operationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel tablePanel = new JPanel(new BorderLayout());
+        tablePanel.setBorder(BorderFactory.createTitledBorder("Tabela 5x5"));
+        tablePanel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        CalendarPanel calendarPanel = new CalendarPanel(resultArea);
+        calendarPanel.setPreferredSize(new Dimension(300, 230));
+        calendarPanel.setMaximumSize(new Dimension(300, 230));
+
+        JButton refreshChartButton = new JButton("Odśwież wykres");
+        refreshChartButton.addActionListener(e -> chartPanelView.refreshChart());
+
+        JPanel chartWrapper = new JPanel(new BorderLayout());
+        chartWrapper.setBorder(BorderFactory.createTitledBorder("Wykres kołowy"));
+        chartWrapper.add(chartPanelView, BorderLayout.CENTER);
+        chartWrapper.add(refreshChartButton, BorderLayout.SOUTH);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        rightPanel.setPreferredSize(new Dimension(310, 0));
+
+        calendarPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        chartWrapper.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        rightPanel.add(calendarPanel);
+        rightPanel.add(Box.createVerticalStrut(8));
+        rightPanel.add(chartWrapper);
+
+        panel.add(tablePanel, BorderLayout.CENTER);
+        panel.add(rightPanel, BorderLayout.EAST);
+
+        return panel;
+    }
+
+    private JPanel createBottomPanel() {
+        JPanel panel = new JPanel(new BorderLayout(8, 6));
+
+        JPanel operationPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 3));
         operationPanel.setBorder(BorderFactory.createTitledBorder("JComboBox - wybór operacji"));
 
         JButton calculateButton = new JButton("Oblicz");
-
         calculateButton.addActionListener(e -> calculateSelectedOperation());
 
         operationPanel.add(new JLabel("Operacja:"));
@@ -103,7 +151,11 @@ public class MainPanel extends JPanel {
 
         JPanel resultPanel = new JPanel(new BorderLayout());
         resultPanel.setBorder(BorderFactory.createTitledBorder("Wyniki obliczeń"));
-        resultPanel.add(new JScrollPane(resultArea), BorderLayout.CENTER);
+
+        JScrollPane resultScrollPane = new JScrollPane(resultArea);
+        resultScrollPane.setPreferredSize(new Dimension(0, 95));
+
+        resultPanel.add(resultScrollPane, BorderLayout.CENTER);
 
         panel.add(operationPanel, BorderLayout.NORTH);
         panel.add(resultPanel, BorderLayout.CENTER);
@@ -131,6 +183,7 @@ public class MainPanel extends JPanel {
             int column = columnSlider.getValue();
 
             tableModel.setNumericValueAt(value, row, column);
+            chartPanelView.refreshChart();
 
             resultArea.append("Wstawiono wartość " + value +
                     " do komórki [" + row + ", " + column + "]\n");
@@ -147,8 +200,10 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private void clearTable() {
+    public void clearTable() {
         tableModel.clear();
+        chartPanelView.refreshChart();
+
         resultArea.append("Tabela została wyzerowana. Puste komórki są traktowane jako 0.\n");
     }
 
@@ -166,6 +221,26 @@ public class MainPanel extends JPanel {
         }
 
         calculate(selectedOperation);
+    }
+
+    public void calculateSum() {
+        operationComboBox.setSelectedItem(Operation.SUM);
+        calculate(Operation.SUM);
+    }
+
+    public void calculateAverage() {
+        operationComboBox.setSelectedItem(Operation.AVERAGE);
+        calculate(Operation.AVERAGE);
+    }
+
+    public void calculateMinMax() {
+        operationComboBox.setSelectedItem(Operation.MIN_MAX);
+        calculate(Operation.MIN_MAX);
+    }
+
+    public void focusNumberField() {
+        numberField.requestFocusInWindow();
+        resultArea.append("Akcja nawigacji: ustawiono fokus na polu liczby.\n");
     }
 
     private void calculate(Operation operation) {
@@ -213,7 +288,7 @@ public class MainPanel extends JPanel {
         }
     }
 
-    private void saveTableToFile() {
+    public void saveTableToFile() {
         try (FileWriter writer = new FileWriter("tabela.txt")) {
             for (int row = 0; row < tableModel.getRowCount(); row++) {
                 for (int column = 0; column < tableModel.getColumnCount(); column++) {

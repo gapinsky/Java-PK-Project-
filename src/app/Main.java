@@ -1,6 +1,5 @@
 package app;
 
-
 import javax.swing.SwingUtilities;
 
 public class Main {
