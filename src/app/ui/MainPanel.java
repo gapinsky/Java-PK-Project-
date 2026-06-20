@@ -1,7 +1,9 @@
 package app.ui;
 
+import app.model.Operation;
+import app.model.TableDataModel;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,7 +15,8 @@ public class MainPanel extends JPanel {
     private final JSlider columnSlider;
     private final JTable table;
     private final JTextArea resultArea;
-    private final JComboBox<String> operationComboBox;
+    private final JComboBox<Operation> operationComboBox;
+    private final TableDataModel tableModel;
 
     public MainPanel() {
         setLayout(new BorderLayout(10, 10));
@@ -27,16 +30,14 @@ public class MainPanel extends JPanel {
         setupSlider(rowSlider);
         setupSlider(columnSlider);
 
-        table = createTable();
+        tableModel = new TableDataModel();
+        table = new JTable(tableModel);
+        table.setRowHeight(28);
 
         resultArea = new JTextArea(7, 30);
         resultArea.setEditable(false);
 
-        operationComboBox = new JComboBox<>(new String[]{
-                "Suma elementów",
-                "Średnia elementów",
-                "Wartość max i min"
-        });
+        operationComboBox = new JComboBox<>(Operation.values());
 
         add(createInputPanel(), BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
@@ -110,22 +111,6 @@ public class MainPanel extends JPanel {
         return panel;
     }
 
-    private JTable createTable() {
-        String[] columns = {"0", "1", "2", "3", "4"};
-
-        DefaultTableModel model = new DefaultTableModel(columns, 5) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        JTable createdTable = new JTable(model);
-        createdTable.setRowHeight(28);
-
-        return createdTable;
-    }
-
     private void insertValueIntoTable() {
         String text = numberField.getText();
 
@@ -145,7 +130,7 @@ public class MainPanel extends JPanel {
             int row = rowSlider.getValue();
             int column = columnSlider.getValue();
 
-            table.setValueAt(value, row, column);
+            tableModel.setNumericValueAt(value, row, column);
 
             resultArea.append("Wstawiono wartość " + value +
                     " do komórki [" + row + ", " + column + "]\n");
@@ -163,17 +148,12 @@ public class MainPanel extends JPanel {
     }
 
     private void clearTable() {
-        for (int row = 0; row < table.getRowCount(); row++) {
-            for (int column = 0; column < table.getColumnCount(); column++) {
-                table.setValueAt(null, row, column);
-            }
-        }
-
+        tableModel.clear();
         resultArea.append("Tabela została wyzerowana. Puste komórki są traktowane jako 0.\n");
     }
 
     private void calculateSelectedOperation() {
-        String selectedOperation = (String) operationComboBox.getSelectedItem();
+        Operation selectedOperation = (Operation) operationComboBox.getSelectedItem();
 
         if (selectedOperation == null) {
             JOptionPane.showMessageDialog(
@@ -188,87 +168,59 @@ public class MainPanel extends JPanel {
         calculate(selectedOperation);
     }
 
-    private void calculate(String operation) {
-        try {
-            double sum = 0;
-            int count = table.getRowCount() * table.getColumnCount();
+    private void calculate(Operation operation) {
+        double sum = 0;
+        double min = 0;
+        double max = 0;
+        boolean firstCell = true;
 
-            double min = 0;
-            double max = 0;
-            boolean firstCell = true;
+        for (int row = 0; row < tableModel.getRowCount(); row++) {
+            for (int column = 0; column < tableModel.getColumnCount(); column++) {
+                double value = tableModel.getNumericValueAt(row, column);
 
-            for (int row = 0; row < table.getRowCount(); row++) {
-                for (int column = 0; column < table.getColumnCount(); column++) {
-                    Object cellValue = table.getValueAt(row, column);
+                sum += value;
 
-                    double value;
-
-                    if (cellValue == null || cellValue.toString().isEmpty()) {
-                        value = 0;
-                    } else {
-                        value = Double.parseDouble(cellValue.toString());
+                if (firstCell) {
+                    min = value;
+                    max = value;
+                    firstCell = false;
+                } else {
+                    if (value < min) {
+                        min = value;
                     }
 
-                    sum += value;
-
-                    if (firstCell) {
-                        min = value;
+                    if (value > max) {
                         max = value;
-                        firstCell = false;
-                    } else {
-                        if (value < min) {
-                            min = value;
-                        }
-
-                        if (value > max) {
-                            max = value;
-                        }
                     }
                 }
             }
+        }
 
-            switch (operation) {
-                case "Suma elementów":
-                    resultArea.append("Suma elementów: " + sum + "\n");
-                    break;
+        switch (operation) {
+            case SUM:
+                resultArea.append("Suma elementów: " + sum + "\n");
+                break;
 
-                case "Średnia elementów":
-                    double average = sum / count;
-                    resultArea.append("Średnia elementów: " + average + "\n");
-                    break;
+            case AVERAGE:
+                double average = sum / tableModel.getElementsCount();
+                resultArea.append("Średnia elementów: " + average + "\n");
+                break;
 
-                case "Wartość max i min":
-                    resultArea.append("Wartość maksymalna: " + max + "\n");
-                    resultArea.append("Wartość minimalna: " + min + "\n");
-                    break;
-
-                default:
-                    resultArea.append("Nieznana operacja.\n");
-            }
-
-        } catch (NumberFormatException exception) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Tabela zawiera niepoprawne dane.",
-                    "Błąd danych",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            case MIN_MAX:
+                resultArea.append("Wartość maksymalna: " + max + "\n");
+                resultArea.append("Wartość minimalna: " + min + "\n");
+                break;
         }
     }
 
     private void saveTableToFile() {
         try (FileWriter writer = new FileWriter("tabela.txt")) {
-            for (int row = 0; row < table.getRowCount(); row++) {
-                for (int column = 0; column < table.getColumnCount(); column++) {
-                    Object value = table.getValueAt(row, column);
+            for (int row = 0; row < tableModel.getRowCount(); row++) {
+                for (int column = 0; column < tableModel.getColumnCount(); column++) {
+                    double value = tableModel.getNumericValueAt(row, column);
+                    writer.write(String.valueOf(value));
 
-                    if (value == null || value.toString().isEmpty()) {
-                        writer.write("0");
-                    } else {
-                        writer.write(value.toString());
-                    }
-
-                    if (column < table.getColumnCount() - 1) {
+                    if (column < tableModel.getColumnCount() - 1) {
                         writer.write("; ");
                     }
                 }
